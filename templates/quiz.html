@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Excellentia — QCM</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <div><strong>EXCELLENTIA</strong><span class="topbar-sub">Simulation · 100 questions</span></div>
+  <div id="timer" class="timer">100:00</div>
+</header>
+
+<main class="quiz-wrap">
+<form id="quizForm" method="post" action="{{ url_for('submit') }}">
+{% for q in questions %}
+<section class="question-card">
+  <div class="q-meta">
+    <span class="q-number">Question {{ q.id }}/100</span>
+    <span class="subject">{{ q.subject }}</span>
+    <span class="difficulty">{{ q.difficulty }}</span>
+  </div>
+  <h2>{{ q.question }}</h2>
+  <div class="choices">
+    {% for letter, text in q.choices.items() %}
+    <label class="choice">
+      <input type="radio" name="q{{ q.id }}" value="{{ letter }}">
+      <span><b>{{ letter }}</b>{{ text }}</span>
+    </label>
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}
+<button class="submit-btn" type="submit" onclick="return confirmSubmit()">Terminer et voir mon résultat</button>
+</form>
+</main>
+
+<script>
+const DURATION = {{ duration }};
+let remaining = DURATION;
+let submitted = false;
+
+function renderTimer() {
+  const m = Math.floor(remaining / 60);
+  const s = remaining % 60;
+  document.getElementById("timer").textContent =
+    String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0");
+  if (remaining <= 300) document.getElementById("timer").classList.add("urgent");
+}
+
+const timer = setInterval(() => {
+  remaining--;
+  renderTimer();
+  if (remaining <= 0 && !submitted) {
+    submitted = true;
+    clearInterval(timer);
+    document.getElementById("quizForm").submit();
+  }
+}, 1000);
+
+function confirmSubmit() {
+  submitted = true;
+  return confirm("Tu es sûr de vouloir terminer le QCM ? Les questions non répondues seront comptées comme fausses.");
+}
+
+renderTimer();
+</script>
+</body>
+</html>

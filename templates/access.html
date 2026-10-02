@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Excellentia — Accès au QCM</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="centered">
+<main class="card access-card">
+  <div class="badge">SIMULATION CONCOURS</div>
+  <h1>Excellentia</h1>
+  <p class="subtitle">QCM de 100 questions · 100 minutes</p>
+  <div class="subjects">
+    <span>🧮 Maths</span><span>🧠 Logique</span><span>🇫🇷 Français</span><span>🇬🇧 Anglais</span><span>🌍 Culture</span>
+  </div>
+  <form method="post">
+    <label for="code">Code d'accès</label>
+    <input id="code" name="code" type="password" placeholder="Entre le code" autocomplete="off" required>
+    {% if error %}<p class="error">{{ error }}</p>{% endif %}
+    <button type="submit">Commencer le concours →</button>
+  </form>
+  <p class="small">Temps limité à 100 minutes. Une fois le temps écoulé, la copie est envoyée automatiquement.</p>
+</main>
+</body>
+</html>

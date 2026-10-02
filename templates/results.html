@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Excellentia — Résultats</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <strong>EXCELLENTIA</strong>
+  <a href="{{ url_for('restart') }}">Recommencer</a>
+</header>
+
+<main class="results-wrap">
+  <section class="score-card">
+    <div class="badge">RÉSULTAT FINAL</div>
+    <div class="score">{{ score }}<span>/{{ total }}</span></div>
+    <div class="percentage">{{ ((score / total) * 100)|round(0)|int }} %</div>
+    <p>{{ score }} bonne(s) réponse(s) · {{ total-score }} erreur(s) ou question(s) non répondue(s)</p>
+  </section>
+
+  <h2 class="correction-title">Correction détaillée</h2>
+  {% for c in corrections %}
+  <article class="correction {% if c.is_correct %}correct{% else %}wrong{% endif %}">
+    <div class="q-meta">
+      <span class="q-number">Question {{ c.id }}</span>
+      <span class="subject">{{ c.subject }}</span>
+      <span class="status">{% if c.is_correct %}✓ Correcte{% else %}✗ À revoir{% endif %}</span>
+    </div>
+    <h3>{{ c.question }}</h3>
+    <p><strong>Ta réponse :</strong> {{ c.selected }}</p>
+    <p><strong>Bonne réponse :</strong> {{ c.correct }}</p>
+    <div class="explanation"><strong>💡 Explication :</strong> {{ c.explanation }}</div>
+  </article>
+  {% endfor %}
+  <a class="back-btn" href="{{ url_for('restart') }}">Faire une nouvelle simulation</a>
+</main>
+</body>
+</html>
