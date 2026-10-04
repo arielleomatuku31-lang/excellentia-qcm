@@ -70,7 +70,7 @@ def submit():
         score=score,
         total=len(QUESTIONS),
         corrections=corrections
-
+    )
 
 
 @app.route("/restart")
