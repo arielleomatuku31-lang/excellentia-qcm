@@ -17,7 +17,6 @@ def access_required(view):
         return view(*args, **kwargs)
     return wrapped
 
-
 @app.route("/", methods=["GET", "POST"])
 def access():
     if request.method == "POST":
@@ -71,7 +70,7 @@ def submit():
         score=score,
         total=len(QUESTIONS),
         corrections=corrections
-    )
+
 
 
 @app.route("/restart")
